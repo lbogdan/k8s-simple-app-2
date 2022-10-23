@@ -13,7 +13,8 @@
     "moduleResolution": "node",
     "noUncheckedIndexedAccess": true,
     "outDir": "./dist",
-    "rootDir": "./src"
+    "rootDir": "./src",
+    "allowSyntheticDefaultImports": true
   },
   "include": ["./src"]
 }
