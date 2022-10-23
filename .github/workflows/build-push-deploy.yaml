@@ -13,4 +13,10 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Build image
-        run: echo docker build -t $GITHUB_REPOSITORY:$GITHUB_REF_NAME --build-arg VERSION=$GITHUB_REF_NAME .
+        run: docker build -t $GITHUB_REPOSITORY:$GITHUB_REF_NAME --build-arg VERSION=$GITHUB_REF_NAME .
+
+      - name: Login to Docker Hub
+        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Push image to Docker Hub
+        run: docker push $GITHUB_REPOSITORY:$GITHUB_REF_NAME
