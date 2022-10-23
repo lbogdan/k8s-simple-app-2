@@ -70,6 +70,7 @@ router.get('/id', (ctx) => {
   ctx.body = {
     id: hostname(),
     version: VERSION,
+    databasePassword: process.env.SECRET_DATABASE_PASSWORD ?? '[not set]',
   };
 });
 
