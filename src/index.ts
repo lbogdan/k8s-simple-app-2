@@ -13,6 +13,7 @@ const SECOND = 1000; // ms
 let alive = true;
 let error = false;
 let errorTimer: NodeJS.Timer | undefined;
+let terminating = false;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function debug(message?: any, ...optionalParams: any[]) {
@@ -24,8 +25,8 @@ const app = new Koa();
 const router = new Router();
 
 router.get('/readyz', (ctx) => {
-  if (error) {
-    ctx.body = { status: 'ERROR' };
+  if (error || terminating) {
+    ctx.body = { status: error ? 'ERROR' : 'TERMINATING' };
     ctx.status = 500;
     return;
   }
@@ -68,6 +69,7 @@ router.get('/not-ready', (ctx) => {
 router.get('/id', (ctx) => {
   ctx.body = {
     id: hostname(),
+    version: VERSION,
   };
 });
 
@@ -78,3 +80,19 @@ app.listen(PORT, () => {
     `k8s-simple-app version ${VERSION} listening on http://localhost:${PORT}/ ...`
   );
 });
+
+function signalHandler(signal: NodeJS.Signals) {
+  if (terminating) {
+    return;
+  }
+
+  terminating = true;
+  debug(`got termination signal ${signal}, cleaning up...`);
+  setTimeout(() => {
+    debug('cleanup done, exiting...');
+    process.exit(0);
+  }, 10 * SECOND);
+}
+
+process.on('SIGTERM', signalHandler);
+process.on('SIGINT', signalHandler);
