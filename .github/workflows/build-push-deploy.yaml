@@ -1,0 +1,16 @@
+name: Build, Push, Deploy
+
+on:
+  push:
+    tags:
+      - v*
+
+jobs:
+  build-push-deploy:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Build image
+        run: echo docker build -t $GITHUB_REPOSITORY:$GITHUB_REF_NAME --build-arg VERSION=$GITHUB_REF_NAME .
