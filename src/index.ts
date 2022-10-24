@@ -75,6 +75,7 @@ router.get('/id', (ctx) => {
       databasePassword: process.env.SECRET_DATABASE_PASSWORD ?? '[not set]',
     },
     config: config,
+    foo: 'bar',
   };
 });
 
