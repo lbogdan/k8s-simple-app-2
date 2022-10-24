@@ -3,6 +3,7 @@ import { hostname } from 'node:os';
 import Koa from 'koa';
 import Router from '@koa/router';
 import logger from 'koa-logger';
+import { config } from './config.js';
 
 install();
 
@@ -70,7 +71,10 @@ router.get('/id', (ctx) => {
   ctx.body = {
     id: hostname(),
     version: VERSION,
-    databasePassword: process.env.SECRET_DATABASE_PASSWORD ?? '[not set]',
+    secrets: {
+      databasePassword: process.env.SECRET_DATABASE_PASSWORD ?? '[not set]',
+    },
+    config: config,
   };
 });
 
