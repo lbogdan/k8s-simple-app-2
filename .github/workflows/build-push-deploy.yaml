@@ -38,7 +38,8 @@ jobs:
         run: git config user.email luca.bogdan@gmail.com && git config user.name "Bogdan Luca"
 
       - name: Set image
-        run: sed -i 's|^      - image:.*|      - image: '"$GITHUB_REPOSITORY:$GITHUB_REF_NAME"'|' k8s/staging/deployment.yaml
+        run: >
+          sed -i 's|^      - image:.*|      - image: '"$GITHUB_REPOSITORY:$GITHUB_REF_NAME"'|' k8s/staging/deployment.yaml
 
       - name: Commit and push manifests
         run: git add . && git commit -m 'Deploy $GITHUB_REF_NAME to staging.' && git push
