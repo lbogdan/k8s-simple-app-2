@@ -6,7 +6,7 @@ on:
       - v*
 
 jobs:
-  build-push-deploy:
+  build-push:
     runs-on: self-hosted
     steps:
       - name: Checkout
@@ -20,3 +20,25 @@ jobs:
 
       - name: Push image to Docker Hub
         run: docker push $GITHUB_REPOSITORY:$GITHUB_REF_NAME
+
+  deploy-staging:
+    runs-on: self-hosted
+    steps:
+    needs: [build-push]
+    environment:
+      name: Staging
+      url: https://app-staging.workshop.jsleague.ro/
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Configure git identity
+        run: git config user.email luca.bogdan@gmail.com && git config user.name "Bogdan Luca"
+
+      - name: Set image
+        run: sed -i 's|^      - image:.*|      - image: '"$GITHUB_REPOSITORY:$GITHUB_REF_NAME"'|' k8s/staging/deployment.yaml
+
+      - name: Commit and push manifests
+        run: git add . && git commit -m 'Deploy $GITHUB_REF_NAME to staging.' && git push
