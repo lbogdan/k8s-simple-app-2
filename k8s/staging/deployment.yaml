@@ -22,7 +22,7 @@ spec:
         app.kubernetes.io/environment: staging
     spec:
       containers:
-      - image: lbogdan/k8s-simple-app-2:v0.0.6
+      - image: lbogdan/k8s-simple-app-2:v0.0.7
         name: k8s-simple-app
         resources:
           requests:
