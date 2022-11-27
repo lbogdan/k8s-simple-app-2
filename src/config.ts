@@ -11,6 +11,9 @@ async function loadConfig() {
     const newConfig: Record<string, string> = JSON.parse(
       await readFile('config/config.json', { encoding: 'utf8' })
     );
+    for (const key of Object.keys(config)) {
+      delete config[key];
+    }
     for (const key of Object.keys(newConfig)) {
       const value = newConfig[key];
       if (value) {
