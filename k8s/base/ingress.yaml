@@ -2,17 +2,12 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: k8s-simple-app
-  namespace: production
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt
-  labels:
-    app.kubernetes.io/name: k8s-simple-app
-    app.kubernetes.io/version: v0.0.1
-    app.kubernetes.io/environment: production
 spec:
   ingressClassName: nginx
   rules:
-  - host: app.workshop.jsleague.ro
+  - host: ""
     http:
       paths:
       - backend:
@@ -24,5 +19,5 @@ spec:
         pathType: ImplementationSpecific
   tls:
   - hosts:
-    - app.workshop.jsleague.ro
+    - ""
     secretName: k8s-simple-app-tls
