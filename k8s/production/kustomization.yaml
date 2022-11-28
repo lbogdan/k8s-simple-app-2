@@ -7,7 +7,6 @@ bases:
 namespace: production
 
 commonLabels:
-  app.kubernetes.io/version: v0.0.12
   app.kubernetes.io/environment: production
 
 configMapGenerator:
