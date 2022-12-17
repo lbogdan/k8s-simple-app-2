@@ -18,7 +18,7 @@ configMapGenerator:
 
 images:
 - name: lbogdan/k8s-simple-app-2
-  newTag: v0.0.12
+  newTag: v0.0.14
 
 patchesStrategicMerge:
 - sealedsecret.yaml
